@@ -1,8 +1,8 @@
 # 📊 BÁO CÁO THU HOẠCH NGHIỆM THU BÀI LAB 3 (BƯỚC 3 — SUBMISSION ARTIFACT)
 
-> **Họ và Tên Học viên:** [Điền Họ và Tên]  
-> **Mã Sinh Viên / Mã Học viên:** [Điền MSSV]  
-> **Chủ đề Lựa chọn:** [Điền tên chủ đề đã chọn từ docs/DANH_SACH_DE_TAI.md hoặc Đề tài Mở]  
+> **Họ và Tên Học viên:** Đồng Mạnh Hùng
+> **Mã Sinh Viên / Mã Học viên:** 2A202602412  
+> **Chủ đề Lựa chọn:** Trợ lý quản lý chi tiêu cá nhân 
 
 ---
 
@@ -10,11 +10,11 @@
 
 | Tiêu chí Đánh giá | Mức độ (1 - 5) | Giải trình chi tiết lý do chọn điểm |
 | :--- | :---: | :--- |
-| **1. Multi-step Reasoning** | / 5 | Bài toán có yêu cầu chia nhỏ nhiều bước suy luận nối tiếp nhau không? |
-| **2. Tool Interaction** | / 5 | Hệ thống có cần kết nối với MCP Server / Cơ sở dữ liệu bên ngoài không? |
-| **3. Dynamic Decision** | / 5 | Bước tiếp theo có phụ thuộc vào kết quả quan sát bước trước không? |
-| **4. Long Horizon Goal** | / 5 | Hệ thống có phải giữ mục tiêu xuyên suốt qua nhiều lượt xử lý không? |
-| **TỔNG ĐIỂM AGENTIC FIT** | **/ 20** | *Nếu tổng điểm > 12/20: Bài toán rất phù hợp triển khai Agentic System.* |
+| **1. Multi-step Reasoning** | 3/ 5 | Hệ thống không chỉ phân loại thu/chi đơn thuần mà cần lập luận đa bước: phân tích tác động của khoản chi đột xuất lên ngân sách tháng, dự báo xu hướng dòng tiền đến cuối kỳ, đánh giá mức độ ưu tiên giữa các danh mục và đề xuất kịch bản bù trừ ngân sách hợp lý.|
+| **2. Tool Interaction** | 3/ 5 | Người dùng nhập chi tiêu hôm nay, SQL/Vector DB (truy vấn lịch sử và hạn mức ngân sách), Python/Calculator (tính toán chính xác chỉ số tài chính, lãi suất, tỷ lệ tiết kiệm) và Notification API (gửi cảnh báo tức thì). |
+| **3. Dynamic Decision** | 3/ 5 | Kế hoạch thực thi thay đổi động theo ngữ cảnh đầu vào: nếu thông tin giao dịch mơ hồ → chủ động hỏi lại để làm rõ (Human-in-the-loop); nếu chi tiêu trong hạn mức → tự động ghi sổ; nếu phát hiện nguy cơ thâm hụt → tự kích hoạt quy trình phân tích và đề xuất điều chỉnh ngân sách cho người dùng duyệt. |
+| **4. Long Horizon Goal** | 4/ 5 | Hệ thống cần phải giữ mục tiêu xuyên suốt, agent theo dõi số tiền chi tiêu hàng tháng và liên tục cân đối dòng tiền. |
+| **TỔNG ĐIỂM AGENTIC FIT** | **13/ 20** | *Nếu tổng điểm > 12/20: Bài toán rất phù hợp triển khai Agentic System.* |
 
 ---
 
@@ -28,20 +28,11 @@ Dán 1 đoạn trích xuất log tiêu biểu từ file `docs/trace_waterfall.js
 [
   {
     "step": 1,
-    "action_type": "TOOL_EXECUTION",
-    "tool_name": "academic_query",
-    "arguments": {
-      "student_id": "SV2026001"
-    },
-    "observation": {
-      "status": "SUCCESS",
-      "student_id": "SV2026001",
-      "data": {
-        "full_name": "Nguyễn Văn An",
-        "gpa": 3.85
-      }
-    },
-    "latency_ms": 120.5
+    "query": "Thời tiết ở trường hôm nay thế nào?",
+    "action_type": "FINAL_ANSWER",
+    "thought": "Gemini phản hồi trực tiếp bằng văn bản (không cần gọi công cụ).",
+    "output": "Xin lỗi bạn, là Trợ lý Học vụ của VinUni, tôi chỉ có thể hỗ trợ bạn tra cứu thông tin học vụ (như điểm số, hồ sơ sinh viên) hoặc đặt lịch hẹn với Cố vấn học tập. Tôi không có công cụ để cập nhật thông tin thời tiết thời gian thực. \n\nBạn có thể tự kiểm tra thời tiết Hà Nội (khu vực Gia Lâm nơi trường tọa lạc) qua các ứng dụng thời tiết trên điện thoại hoặc trang web dự báo thời tiết nhé! Nếu bạn cần hỗ trợ về học vụ, hãy cho tôi biết mã sinh viên của bạn.",
+    "latency_ms": 2928.89
   }
 ]
 ```
@@ -50,10 +41,10 @@ Dán 1 đoạn trích xuất log tiêu biểu từ file `docs/trace_waterfall.js
 
 ## 3. TỔNG KẾT KẾT QUẢ NGHIỆM THU & NỘP BÀI
 
-- [ ] Đã điền API Key thật trong `.env` và xác nhận Agent chạy mượt mà trên LLM API thật (Gemini/OpenAI).
-- **Tổng số Test Cases đã chạy thành công:** ___ / 5 test cases.
-- **Số lượt gọi Tool qua MCP Server chính xác:** ___ lượt.
-- **Kết quả đẩy Repo nộp bài:** [ ] Đã Commit và Push mã nguồn thành công lên GitHub cá nhân.
+- [x] Đã điền API Key thật trong `.env` và xác nhận Agent chạy mượt mà trên LLM API thật (Gemini/OpenAI).
+- **Tổng số Test Cases đã chạy thành công:** 5 / 5 test cases.
+- **Số lượt gọi Tool qua MCP Server chính xác:** 5/5 lượt.
+- **Kết quả đẩy Repo nộp bài:** [x] Đã Commit và Push mã nguồn thành công lên GitHub cá nhân.
 
 ---
 
